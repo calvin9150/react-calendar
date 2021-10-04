@@ -9,7 +9,7 @@
     "@fullcalendar/timegrid": "^5.9.0",
     "connected-react-router": "^6.8.0",
     "dayjs": "^1.10.7",
-    "firebase": "^8.2.10",
+    "firebase": "^9.1.1",
     "history": "^4.10.1",
     "immer": "^8.0.1",
     "lodash": "^4.17.21",
