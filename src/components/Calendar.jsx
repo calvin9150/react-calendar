@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import dayjs from "dayjs";
 
 import FullCalendar from "@fullcalendar/react";
@@ -7,9 +7,11 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import Modal from "./Modal";
+import { getScheduleFB } from "../redux/modules/calendar";
 
 const Calendar = () => {
   const schedules = useSelector((state) => state.calendar.schedules);
+  const dispatch = useDispatch();
 
   const [clicked, setClicked] = useState(false);
   const [title, setTitle] = useState("");
@@ -18,6 +20,11 @@ const Calendar = () => {
   const [date, setDate] = useState("");
   const [hour, setHour] = useState("");
   const [minutes, setMinutes] = useState("");
+  const [sid, setSid] = useState("");
+
+  useEffect(() => {
+    dispatch(getScheduleFB());
+  }, []);
 
   const onClickDate = (e) => {
     // console.log(JSON.stringify(e.start).replace(/\"/gi, ""));
@@ -33,8 +40,8 @@ const Calendar = () => {
     setDate(days.date());
     setHour(days.hour());
     setMinutes(days.minute());
+    setSid(e._def?.publicId);
 
-    console.log(days.hour());
     if (e.title) {
       setClicked(true);
     }
@@ -55,6 +62,7 @@ const Calendar = () => {
           date={date}
           hour={hour}
           minutes={minutes}
+          sid={sid}
         />
       )}
       <FullCalendar

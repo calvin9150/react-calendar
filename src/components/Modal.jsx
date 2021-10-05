@@ -1,4 +1,8 @@
+import { useDispatch } from "react-redux";
+
 import styled from "styled-components";
+import Button from "../elements/Button";
+import { removeScheduleFB } from "../redux/modules/calendar";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -18,6 +22,9 @@ const Background = styled.div`
 `;
 const Container = styled.div`
   position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 35vw;
   height: 50vh;
   vertical-align: middle;
@@ -27,20 +34,65 @@ const Container = styled.div`
   padding: 2em;
 `;
 
-const Modal = ({ close, title, year, month, date, hour, minutes }) => {
+const Close = styled.div`
+  position: absolute;
+  right: 2em;
+  font-size: 1.5em;
+
+  :hover {
+    background-color: #80808053;
+    border-radius: 5px;
+  }
+`;
+
+const Buttons = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+`;
+
+const Contents = styled.div`
+  font-size: 1.5em;
+  margin-top: 2em;
+
+  div {
+    margin: 1em 0;
+  }
+`;
+
+const Modal = ({ close, title, year, month, date, hour, minutes, sid }) => {
+  const ampm = hour >= 12 ? "오후 " + (hour % 12) : "오전 " + (hour % 12);
+  const dispatch = useDispatch();
+
+  const onClickRemove = () => {
+    console.log("sid", sid);
+    dispatch(removeScheduleFB(sid));
+    close();
+  };
+
   return (
     <>
       <Wrapper>
         <Container>
-          <div>
-            날짜 : {year}년 {month}월 {date}일
-          </div>
-          <div>
-            시간 : {hour}시 {minutes}분
-          </div>
-          <div>할 일 : {title}</div>
-          <button onClick={close}>취소</button>
-          <button>완료</button>
+          <Close onClick={close}>❌</Close>
+          <Contents>
+            <div>
+              📆 {year}년 {month}월 {date}일
+            </div>
+            <div>
+              🕘 {ampm}시 {minutes}분
+            </div>
+            <div>✅ 할 일 : {title}</div>
+          </Contents>
+          <Buttons>
+            <Button _onClick={onClickRemove} width="30%" margin="1em">
+              삭제
+            </Button>
+            <Button width="30%" margin="1em">
+              완료
+            </Button>
+          </Buttons>
         </Container>
         <Background onClick={close}></Background>
       </Wrapper>
