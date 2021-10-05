@@ -88,6 +88,7 @@ export const updateScheduleFB = (schedule) => {
   return async function (dispatch) {
     await updateDoc(doc(db, "schedules", schedule), {
       finished: true,
+      color: "red",
     });
     dispatch(updateSchedule(schedule));
   };
@@ -122,7 +123,7 @@ export default handleActions(
             console.log("넣기", v);
             return;
           }
-          updatedSchedule.push({ ...v, finished: true });
+          updatedSchedule.push({ ...v, finished: true, color: "red" });
           console.log("수정넣기", v);
           return;
         });

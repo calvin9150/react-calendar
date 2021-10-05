@@ -50,6 +50,12 @@ const InputWrap = styled.div`
     height: 2em;
   }
 `;
+
+const AlertText = styled.div`
+  font-size: 0.8em;
+  color: red;
+`;
+
 const Buttons = styled.div`
   display: flex;
   flex-direction: row;
@@ -60,28 +66,61 @@ const Edit = (props) => {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const [inputTitle, setInputTitle] = useState("");
+  const [titleError, setTitleError] = useState(false);
+  const [dateError, setDateError] = useState(false);
+  const [timeError, setTimeError] = useState(false);
 
   const dispatch = useDispatch();
 
   const onChangedDate = (e) => {
     setSelectedDate(e.target.value);
+    setDateError(false);
   };
 
   const onChangedTime = (e) => {
     setSelectedTime(e.target.value);
+    setTimeError(false);
   };
 
   const onChangedTitle = (e) => {
-    setInputTitle(e.target.value);
+    console.log(e.target.value);
+    const value = e.target.value.trim();
+    setInputTitle(value);
+    if (value) {
+      setTitleError(false);
+    }
   };
-
+  console.log(inputTitle);
   const onClickSubmitBtn = () => {
-    const date = selectedDate + "T" + selectedTime;
-    dispatch(addScheduleFB({ date: date, title: inputTitle, finished: false }));
+    if (selectedDate && selectedTime && inputTitle.trim()) {
+      console.log(inputTitle.trim());
+      const date = selectedDate + "T" + selectedTime;
+      dispatch(
+        addScheduleFB({ date: date, title: inputTitle, finished: false })
+      );
+      return;
+    }
+    checkTitle();
+    checkDate();
+    checkTime();
   };
 
   const onClickCancle = () => {
     history.replace("/");
+  };
+
+  const checkTitle = () => {
+    if (!inputTitle.trim()) {
+      setTitleError(true);
+    }
+  };
+
+  const checkDate = () => {
+    if (!selectedDate) setDateError(true);
+  };
+
+  const checkTime = () => {
+    if (!selectedTime) setTimeError(true);
   };
 
   return (
@@ -91,8 +130,11 @@ const Edit = (props) => {
         <Container>
           <InputWrap>
             <input type="text" onChange={onChangedTitle} />
+            {titleError && <AlertText>일정 내용을 입력하세요.</AlertText>}
             <input type="date" onChange={onChangedDate} />
+            {dateError && <AlertText>날짜를 선택하세요.</AlertText>}
             <input type="time" onChange={onChangedTime} />
+            {timeError && <AlertText>시간을 선택하세요.</AlertText>}
           </InputWrap>
           <Buttons>
             <Button _onClick={onClickCancle} width="30%" margin="1em">
