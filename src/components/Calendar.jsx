@@ -8,9 +8,11 @@ import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import Modal from "./Modal";
 import { getScheduleFB } from "../redux/modules/calendar";
+import Button from "../elements/Button";
 
 const Calendar = () => {
   const schedules = useSelector((state) => state.calendar.schedules);
+  const finishedSchedules = schedules.filter((v) => v.finished === true);
   const dispatch = useDispatch();
 
   const [clicked, setClicked] = useState(false);
@@ -21,6 +23,7 @@ const Calendar = () => {
   const [hour, setHour] = useState("");
   const [minutes, setMinutes] = useState("");
   const [sid, setSid] = useState("");
+  const [showFinished, setShowFinished] = useState(false);
 
   useEffect(() => {
     dispatch(getScheduleFB());
@@ -41,7 +44,7 @@ const Calendar = () => {
     setHour(days.hour());
     setMinutes(days.minute());
     setSid(e._def?.publicId);
-
+    console.log(schedules);
     if (e.title) {
       setClicked(true);
     }
@@ -49,6 +52,14 @@ const Calendar = () => {
 
   const closeModal = (e) => {
     setClicked(false);
+  };
+
+  const onClickShowFinish = () => {
+    setShowFinished(true);
+  };
+
+  const onClickShowAll = () => {
+    setShowFinished(false);
   };
 
   return (
@@ -65,12 +76,27 @@ const Calendar = () => {
           sid={sid}
         />
       )}
+      {!showFinished ? (
+        <Button is_float _onClick={onClickShowFinish}>
+          완료된 일정만 보기
+        </Button>
+      ) : (
+        <Button is_float _onClick={onClickShowAll}>
+          전체 일정 보기
+        </Button>
+      )}
+
       <FullCalendar
+        headerToolbar={{
+          start: "today",
+          center: "title",
+          end: "prev,next",
+        }}
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
         dateClick={onClickDate}
         // eventContent={DateEvent}
-        events={schedules}
+        events={showFinished ? finishedSchedules : schedules}
         eventClick={(info) => {
           onClickDate(info.event);
         }}

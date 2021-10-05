@@ -80,8 +80,16 @@ export const removeScheduleFB = (schedule) => {
   return async function (dispatch) {
     console.log(schedule);
     await deleteDoc(doc(db, "schedules", schedule));
-    alert("삭제되었습니다.");
     dispatch(removeSchedule(schedule));
+  };
+};
+
+export const updateScheduleFB = (schedule) => {
+  return async function (dispatch) {
+    await updateDoc(doc(db, "schedules", schedule), {
+      finished: true,
+    });
+    dispatch(updateSchedule(schedule));
   };
 };
 
@@ -106,9 +114,21 @@ export default handleActions(
       }),
     [UPADTE_SCHEDULE]: (state, action) =>
       produce(state, (draft) => {
-        let idx = draft.list.findIndex((p) => p.id === action.payload.post_id);
-
-        draft.list[idx] = { ...draft.list[idx], ...action.payload.post };
+        const updatedSchedule = [];
+        state.schedules.forEach((v) => {
+          if (v.id !== action.payload.sid) {
+            console.log(v.id, action.payload.sid);
+            updatedSchedule.push(v);
+            console.log("넣기", v);
+            return;
+          }
+          updatedSchedule.push({ ...v, finished: true });
+          console.log("수정넣기", v);
+          return;
+        });
+        draft.schedules = updatedSchedule;
+        console.log("updatedSchedule");
+        console.log(updatedSchedule);
       }),
     [REMOVE_SCHEDULE]: (state, action) =>
       produce(state, (draft) => {

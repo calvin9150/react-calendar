@@ -49,20 +49,28 @@ const ElButton = styled.button`
 `;
 
 const FloatButton = styled.button`
-  width: 50px;
-  height: 50px;
+  width: 10em;
+  height: 2em;
   background-color: #212121;
   color: #ffffff;
   box-sizing: border-box;
-  font-size: 36px;
+  font-size: 1em;
   font-weight: 800;
   position: fixed;
-  bottom: 50px;
-  right: 16px;
+  bottom: 3em;
+  right: 7em;
   text-align: center;
   vertical-align: middle;
   border: none;
-  border-radius: 50px;
+  z-index: 9;
+
+  :hover {
+    background-color: #1c266d;
+  }
+
+  @media screen and (max-width: 720px) {
+    bottom: 5em;
+  }
 `;
 
 export default Button;

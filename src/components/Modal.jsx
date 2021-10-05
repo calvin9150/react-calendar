@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 
 import styled from "styled-components";
 import Button from "../elements/Button";
-import { removeScheduleFB } from "../redux/modules/calendar";
+import { removeScheduleFB, updateScheduleFB } from "../redux/modules/calendar";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -32,6 +32,11 @@ const Container = styled.div`
   z-index: 9999;
   border-radius: 20px;
   padding: 2em;
+
+  @media screen and (max-width: 720px) {
+    width: 80vw;
+    height: 80vh;
+  }
 `;
 
 const Close = styled.div`
@@ -68,6 +73,13 @@ const Modal = ({ close, title, year, month, date, hour, minutes, sid }) => {
   const onClickRemove = () => {
     console.log("sid", sid);
     dispatch(removeScheduleFB(sid));
+    alert("삭제했습니다.");
+    close();
+  };
+
+  const onClickFinish = () => {
+    dispatch(updateScheduleFB(sid));
+    alert("완료!");
     close();
   };
 
@@ -89,7 +101,7 @@ const Modal = ({ close, title, year, month, date, hour, minutes, sid }) => {
             <Button _onClick={onClickRemove} width="30%" margin="1em">
               삭제
             </Button>
-            <Button width="30%" margin="1em">
+            <Button _onClick={onClickFinish} width="30%" margin="1em">
               완료
             </Button>
           </Buttons>

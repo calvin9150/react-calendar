@@ -16,16 +16,23 @@ const PlusBtn = styled.div`
   text-align: center;
   vertical-align: middle;
   border: none;
-  border-radius: 50px;
+  border-radius: 10px;
   z-index: 9;
   user-select: none;
+  :hover {
+    background-color: #2c3352;
+  }
+
+  @media screen and (max-width: 720px) {
+    bottom: 2em;
+  }
 `;
 
 const PlusButton = (props) => {
   const onClickPlus = () => {
     history.push("/write");
   };
-  return <PlusBtn onClick={onClickPlus}> +</PlusBtn>;
+  return <PlusBtn onClick={onClickPlus}>+</PlusBtn>;
 };
 
 export default PlusButton;
