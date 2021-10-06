@@ -9,6 +9,12 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import Modal from "./Modal";
 import { getScheduleFB } from "../redux/modules/calendar";
 import Button from "../elements/Button";
+import styled from "styled-components";
+
+const Wrapper = styled.div`
+  width: 100vw;
+  margin: auto;
+`;
 
 const Calendar = () => {
   const schedules = useSelector((state) => state.calendar.schedules);
@@ -64,43 +70,47 @@ const Calendar = () => {
 
   return (
     <>
-      {clicked && (
-        <Modal
-          close={closeModal}
-          title={title}
-          year={year}
-          month={month}
-          date={date}
-          hour={hour}
-          minutes={minutes}
-          sid={sid}
-        />
-      )}
-      {!showFinished ? (
-        <Button is_float _onClick={onClickShowFinish}>
-          완료된 일정만 보기
-        </Button>
-      ) : (
-        <Button is_float _onClick={onClickShowAll}>
-          전체 일정 보기
-        </Button>
-      )}
+      <Wrapper>
+        {clicked && (
+          <Modal
+            close={closeModal}
+            title={title}
+            year={year}
+            month={month}
+            date={date}
+            hour={hour}
+            minutes={minutes}
+            sid={sid}
+          />
+        )}
+        {!showFinished ? (
+          <Button is_float _onClick={onClickShowFinish}>
+            완료된 일정만 보기
+          </Button>
+        ) : (
+          <Button is_float _onClick={onClickShowAll}>
+            전체 일정 보기
+          </Button>
+        )}
 
-      <FullCalendar
-        headerToolbar={{
-          start: "today",
-          center: "title",
-          end: "prev,next",
-        }}
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-        initialView="dayGridMonth"
-        dateClick={onClickDate}
-        // eventContent={DateEvent}
-        events={showFinished ? finishedSchedules : schedules}
-        eventClick={(info) => {
-          onClickDate(info.event);
-        }}
-      />
+        <FullCalendar
+          height="100vh"
+          width="100vh"
+          headerToolbar={{
+            start: "today",
+            center: "title",
+            end: "prev,next",
+          }}
+          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+          initialView="dayGridMonth"
+          dateClick={onClickDate}
+          // eventContent={DateEvent}
+          events={showFinished ? finishedSchedules : schedules}
+          eventClick={(info) => {
+            onClickDate(info.event);
+          }}
+        />
+      </Wrapper>
     </>
   );
 };

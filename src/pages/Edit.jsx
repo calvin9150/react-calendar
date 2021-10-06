@@ -34,7 +34,7 @@ const Container = styled.div`
   border-radius: 20px;
   padding: 2em;
 
-  @media screen and (max-width: 720px) {
+  @media screen and (max-width: 860px) {
     width: 80vw;
     height: 80vh;
   }
@@ -47,7 +47,10 @@ const InputWrap = styled.div`
   input {
     margin: 1em 0;
     width: 100%;
-    height: 2em;
+    height: 3em;
+  }
+  @media screen and (max-width: 860px) {
+    width: 100%;
   }
 `;
 

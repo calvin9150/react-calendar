@@ -23,7 +23,7 @@ const PlusBtn = styled.div`
     background-color: #2c3352;
   }
 
-  @media screen and (max-width: 720px) {
+  @media screen and (max-width: 860px) {
     bottom: 2em;
   }
 `;

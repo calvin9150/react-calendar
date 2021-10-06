@@ -6,17 +6,16 @@ import Calendar from "../components/Calendar";
 import PlusButton from "../elements/PlusButton";
 
 const Container = styled.div`
-  display: block;
+  display: flex;
   justify-content: center;
-  margin: auto;
-  width: 80vw;
+  width: 100vw;
   height: 80vh;
 
-  @media screen and (max-width: 720px) {
+  @media screen and (max-width: 860px) {
     display: flex;
     justify-content: center;
     margin: auto;
-    width: 80vw;
+    width: 100vw;
     height: 80vh;
   }
 `;

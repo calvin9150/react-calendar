@@ -46,30 +46,34 @@ const ElButton = styled.button`
   border: none;
   padding: ${(props) => props.padding};
   ${(props) => (props.margin ? `margin: ${props.margin};` : "")}
+
+  @media screen and (max-width: 860px) {
+    width: 50%;
+  }
 `;
 
 const FloatButton = styled.button`
   width: 10em;
-  height: 2em;
+  height: 3.5em;
   background-color: #212121;
   color: #ffffff;
   box-sizing: border-box;
   font-size: 1em;
   font-weight: 800;
   position: fixed;
-  bottom: 3em;
+  bottom: 2.2em;
   right: 7em;
   text-align: center;
   vertical-align: middle;
-  border: none;
+  border-radius: 10px;
   z-index: 9;
 
   :hover {
     background-color: #1c266d;
   }
 
-  @media screen and (max-width: 720px) {
-    bottom: 5em;
+  @media screen and (max-width: 860px) {
+    bottom: 4.5em;
   }
 `;
 
