@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import Button from "../elements/Button";
@@ -65,7 +65,7 @@ const Buttons = styled.div`
   justify-content: center;
   width: 100%;
 `;
-const Edit = (props) => {
+const Edit = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const [inputTitle, setInputTitle] = useState("");
@@ -75,28 +75,26 @@ const Edit = (props) => {
 
   const dispatch = useDispatch();
 
-  const onChangedDate = (e) => {
+  const onChangedDate = useCallback((e) => {
     setSelectedDate(e.target.value);
     setDateError(false);
-  };
+  }, []);
 
-  const onChangedTime = (e) => {
+  const onChangedTime = useCallback((e) => {
     setSelectedTime(e.target.value);
     setTimeError(false);
-  };
+  }, []);
 
-  const onChangedTitle = (e) => {
-    console.log(e.target.value);
+  const onChangedTitle = useCallback((e) => {
     const value = e.target.value.trim();
     setInputTitle(value);
     if (value) {
       setTitleError(false);
     }
-  };
-  console.log(inputTitle);
+  }, []);
+
   const onClickSubmitBtn = () => {
     if (selectedDate && selectedTime && inputTitle.trim()) {
-      console.log(inputTitle.trim());
       const date = selectedDate + "T" + selectedTime;
       dispatch(
         addScheduleFB({ date: date, title: inputTitle, finished: false })
@@ -108,23 +106,23 @@ const Edit = (props) => {
     checkTime();
   };
 
-  const onClickCancle = () => {
+  const onClickCancle = useCallback(() => {
     history.replace("/");
-  };
+  }, []);
 
-  const checkTitle = () => {
+  const checkTitle = useCallback(() => {
     if (!inputTitle.trim()) {
       setTitleError(true);
     }
-  };
+  }, [inputTitle]);
 
-  const checkDate = () => {
+  const checkDate = useCallback(() => {
     if (!selectedDate) setDateError(true);
-  };
+  }, [selectedDate]);
 
-  const checkTime = () => {
+  const checkTime = useCallback(() => {
     if (!selectedTime) setTimeError(true);
-  };
+  }, [selectedTime]);
 
   return (
     <>

@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import dayjs from "dayjs";
+import styled from "styled-components";
 
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -9,7 +10,6 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import Modal from "./Modal";
 import { getScheduleFB } from "../redux/modules/calendar";
 import Button from "../elements/Button";
-import styled from "styled-components";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -33,15 +33,9 @@ const Calendar = () => {
 
   useEffect(() => {
     dispatch(getScheduleFB());
-  }, []);
+  }, [dispatch]);
 
-  const onClickDate = (e) => {
-    // console.log(JSON.stringify(e.start).replace(/\"/gi, ""));
-    // const time = JSON.stringify(e.start).replace(/\"/gi, "").split("T");
-    // console.log(time);
-    // const date = time[0];
-    // const clock = time[1].split("").splice(0, 8).join("");
-    // console.log(date, clock);
+  const onClickDate = useCallback((e) => {
     setTitle(e.title);
     const days = dayjs(e.start);
     setYear(days.year());
@@ -50,23 +44,22 @@ const Calendar = () => {
     setHour(days.hour());
     setMinutes(days.minute());
     setSid(e._def?.publicId);
-    console.log(schedules);
     if (e.title) {
       setClicked(true);
     }
-  };
+  }, []);
 
-  const closeModal = (e) => {
+  const closeModal = useCallback((e) => {
     setClicked(false);
-  };
+  }, []);
 
-  const onClickShowFinish = () => {
+  const onClickShowFinish = useCallback(() => {
     setShowFinished(true);
-  };
+  }, []);
 
-  const onClickShowAll = () => {
+  const onClickShowAll = useCallback(() => {
     setShowFinished(false);
-  };
+  }, []);
 
   return (
     <>
@@ -95,7 +88,6 @@ const Calendar = () => {
 
         <FullCalendar
           height="100vh"
-          width="100vh"
           headerToolbar={{
             start: "today",
             center: "title",

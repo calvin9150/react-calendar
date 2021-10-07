@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
 import styled from "styled-components";
@@ -70,18 +71,17 @@ const Modal = ({ close, title, year, month, date, hour, minutes, sid }) => {
   const ampm = hour >= 12 ? "오후 " + (hour % 12) : "오전 " + (hour % 12);
   const dispatch = useDispatch();
 
-  const onClickRemove = () => {
-    console.log("sid", sid);
+  const onClickRemove = useCallback(() => {
     dispatch(removeScheduleFB(sid));
     alert("삭제했습니다.");
     close();
-  };
+  }, [sid, close, dispatch]);
 
-  const onClickFinish = () => {
+  const onClickFinish = useCallback(() => {
     dispatch(updateScheduleFB(sid));
     alert("완료!");
     close();
-  };
+  }, [sid, close, dispatch]);
 
   return (
     <>

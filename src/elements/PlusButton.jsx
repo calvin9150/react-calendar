@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
 
@@ -29,9 +29,10 @@ const PlusBtn = styled.div`
 `;
 
 const PlusButton = (props) => {
-  const onClickPlus = () => {
+  const onClickPlus = useCallback(() => {
     history.push("/write");
-  };
+  }, []);
+
   return <PlusBtn onClick={onClickPlus}>+</PlusBtn>;
 };
 
